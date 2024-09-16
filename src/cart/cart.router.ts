@@ -5,7 +5,7 @@ import { Router } from 'express';
 import { authenticateToken } from '../middlewares/authenticateToken';
 import { addToCart, updateCartItem, removeFromCart, getCart } from './cart.controller';
 
-export const cartRouter = Router();
+const cartRouter = Router();
 
 // Add product to cart
 cartRouter.post('cart/add', authenticateToken, addToCart);
@@ -19,4 +19,4 @@ cartRouter.delete('cart/remove', authenticateToken, removeFromCart);
 // Get user's cart
 cartRouter.get('cart/', authenticateToken, getCart);
 
-
+export default cartRouter;
