@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  name      String    @default("")
+  role      Role      @default(USER)
+  orders    Order[]   // One-to-many relationship with orders
+  cart      Cart?
+  reviews   Review[]
+  wishlist  Wishlist?
+  addresses ShippingAddress[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  stock       Int
+  categoryId  Int
+  category    Category      @relation(fields: [categoryId], references: [id])
+  orderItems  OrderProduct[]
+  cartItems   CartProduct[]
+  reviews     Review[]
+  wishlists   Wishlist[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
+}
+
+model Order {
+  id        Int           @id @default(autoincrement())
+  userId    Int
+  user      User          @relation(fields: [userId], references: [id])
+  totalPrice     Float
+  status    OrderStatus    @default(PENDING)
+  orderItems OrderProduct[]
+  payment   Payment?
+  shipping  ShippingAddress?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model OrderProduct {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+model Cart {
+  id        Int           @id @default(autoincrement())
+  userId    Int           @unique
+  user      User          @relation(fields: [userId], references: [id])
+  cartItems CartProduct[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model CartProduct {
+  id        Int      @id @default(autoincrement())
+  cartId    Int
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id          Int           @id @default(autoincrement())
+  orderId     Int           @unique
+  order       Order         @relation(fields: [orderId], references: [id])
+  paymentMethod String
+  amount      Float
+  status      PaymentStatus @default(PENDING)
+  transactionId String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model ShippingAddress {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  orderId      Int      @unique
+  order        Order    @relation(fields: [orderId], references: [id])
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  postalCode   String
+  country      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Wishlist {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @unique
+  user      User      @relation(fields: [userId], references: [id])
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}

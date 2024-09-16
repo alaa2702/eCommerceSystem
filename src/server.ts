@@ -1,0 +1,30 @@
+import Express from "express";
+import userRouter from './user/user.router';
+import productRouter from './routers/products';
+import categoryRouter from './routers/categories';
+import orderRouter from './routers/orders';
+import cartRouter from './routers/cart';
+import reviewRouter from './routers/reviews';
+import paymentRouter from './routers/payments';
+import shippingRouter from './routers/shipping';
+import wishlistRouter from './routers/wishlist';
+import { notFoundData } from "./middlewares/notFoundData";
+import { errorHandler } from "./middlewares/errorHandler";
+const port = 3000;
+const app = Express();
+app.use(Express.json());
+//app.use(notFoundData);
+app.use('api/v1/users', userRouter);
+app.use('api/v1/products', productRouter);
+app.use('api/v1/categories', categoryRouter);
+app.use('api/v1/orders', orderRouter);
+app.use('api/v1/cart', cartRouter);
+app.use('api/v1/reviews', reviewRouter);
+app.use('api/v1/payments', paymentRouter);
+app.use('api/v1/shipping', shippingRouter);
+app.use('api/v1/wishlist', wishlistRouter);
+app.use(errorHandler);
+
+app.listen(port, () => {
+  console.log("server is running on port", port);
+});
