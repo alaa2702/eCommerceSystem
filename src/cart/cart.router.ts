@@ -7,16 +7,15 @@ import { addToCart, updateCartItem, removeFromCart, getCart } from './cart.contr
 
 const cartRouter = Router();
 
-// Add product to cart
-cartRouter.post('cart/add', authenticateToken, addToCart);
 
-// Update quantity of a product in cart
-cartRouter.patch('cart/update', authenticateToken, updateCartItem);
+cartRouter.post('/add', authenticateToken, addToCart);
 
-// Remove product from cart
-cartRouter.delete('cart/remove', authenticateToken, removeFromCart);
 
-// Get user's cart
-cartRouter.get('cart/', authenticateToken, getCart);
+cartRouter.patch('/update', authenticateToken, updateCartItem);
+
+
+cartRouter.delete('/remove', authenticateToken, removeFromCart);
+
+cartRouter.get('/', authenticateToken, getCart);
 
 export default cartRouter;
