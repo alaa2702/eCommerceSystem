@@ -4,7 +4,7 @@ import prisma from "../utils/prisma";
 export const createUserService = async (username: string, email: string, password: string) => {
   const user = await prisma.user.create({
     data: {
-      username,
+      name : username,
       email,
       password,
       role: "USER"
@@ -16,7 +16,7 @@ export const createUserService = async (username: string, email: string, passwor
 export const createAdminService = async (username: string, email: string, password: string) => {
     const user = await prisma.user.create({
       data: {
-        username,
+        name : username,
         email,
         password,
         role: "ADMIN"
@@ -37,7 +37,7 @@ export const createAdminService = async (username: string, email: string, passwo
     const user = await prisma.user.update({
       where: { id },
       data: {
-        username,
+        name : username,
         email,
         password,
       },

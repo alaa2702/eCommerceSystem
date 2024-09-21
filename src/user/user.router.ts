@@ -6,15 +6,15 @@ import { authenticateToken } from "../middlewares/authenticateToken";
 import { authorizeRole } from "../middlewares/authorizationRole";
 
 const userRouter = Express.Router();
-userRouter.post("/user/create", createUserController);
-userRouter.post("/user/login", loginUserController);
-userRouter.patch("/user/update", authenticateToken, updateUserController);
-userRouter.delete("/user/delete", authenticateToken, deleteUserController);
-userRouter.get("/user", authenticateToken, getUserController);
-userRouter.post("/admin/create", authenticateToken, authorizeRole("ADMIN"), createAdminController);
-userRouter.get("/admin/:id", authenticateToken, authorizeRole("ADMIN"), getUserByAdminController);
-userRouter.patch("/admin/update", authenticateToken, authorizeRole("ADMIN"), updateUserByAdminController);
-userRouter.delete("/admin/delete", authenticateToken, authorizeRole("ADMIN"), deleteUserByAdminController);
-userRouter.get("/admin/users", authenticateToken, authorizeRole("ADMIN"), getUsersByAdminController);
+userRouter.post("/auth/register", createUserController);
+userRouter.post("/auth/login", loginUserController);
+userRouter.patch("/update", authenticateToken, updateUserController);
+userRouter.delete("/delete", authenticateToken, deleteUserController);
+userRouter.get("/me", authenticateToken, getUserController);
+//userRouter.post("/admin/create", authenticateToken, authorizeRole("ADMIN"), createAdminController);
+userRouter.get("/:id", authenticateToken, authorizeRole("ADMIN"), getUserByAdminController);
+userRouter.patch("/:id", authenticateToken, authorizeRole("ADMIN"), updateUserByAdminController);
+userRouter.delete("/:id", authenticateToken, authorizeRole("ADMIN"), deleteUserByAdminController);
+userRouter.get("/users", authenticateToken, authorizeRole("ADMIN"), getUsersByAdminController);
 
 export default userRouter;

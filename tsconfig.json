@@ -9,5 +9,7 @@
     "rootDir": "./src"          // The root directory of input TypeScript files
   },
   "include": ["src/**/*"],      // Include all files in the 'src' folder
-  "exclude": ["node_modules"]   // Exclude the 'node_modules' folder
+  "exclude": ["node_modules"],   // Exclude the 'node_modules' folder
+  "typeRoots": ["./src/utils", "./node_modules/@types"],
+
 }
