@@ -1,6 +1,10 @@
+import prisma from "../utils/prisma";
 
+export const getWishlistService = async (userId: number) => {};
 
-export const getWishlistService = async () => {};
+export const createOrAddWishlistService = async (userId:number, products: string[]) => {
 
-export const createWishlistService = async () => {}; 
-export const deleteWishlistService = async () => {};
+}; 
+export const deleteWishlistService = async (userId:number, productName: string ) => {
+    
+};
