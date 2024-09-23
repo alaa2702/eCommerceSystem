@@ -9,7 +9,10 @@ export const addToCart = async (req: Request, res: Response, next: NextFunction)
     if (!product) {
         return res.status(404).json({ message: 'Product not found' });
     }
-    const userId = (req as any).user?.id;
+    const userId = req.user?.id;
+    if (!userId) {  
+        return res.status(401).json({ message: 'User not found' });
+    }
     const cart = await getCartService(userId);
     if (!cart) {
         const newCart = await createCartService(userId);

@@ -2,7 +2,7 @@ import e from "express";
 import prisma from "../utils/prisma";
 
 export const createProductService = async (name: string, price: number, amount: number) => {
-  const product = await prisma.products.create({
+  const product = await prisma.product.create({
     data: {
       name,
       price,
@@ -12,11 +12,11 @@ export const createProductService = async (name: string, price: number, amount: 
 };
 
 export const getProductsService = async () => {
-  const products = await prisma.products.findMany();
+  const products = await prisma.product.findMany();
   return products;
 }
 
 export const getProductService = async (id: number) => {
-  const product = await prisma.products.findUnique({ where: { id } });
+  const product = await prisma.product.findUnique({ where: { id } });
   return product;
 }

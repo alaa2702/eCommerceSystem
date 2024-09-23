@@ -6,7 +6,7 @@ import orderRouter from './order/order.router';
 import cartRouter from './cart/cart.router';
 import reviewRouter from './review/review.router';
 import paymentRouter from './payment/payment.router';
-import shippingRouter from './shipping/shipping.router';
+import shippingRouter from './shippingAddress/shippingAddress.router';
 import wishlistRouter from './wishlist/wishlist.router';
 import { notFoundData } from "./middlewares/notFoundData";
 import { errorHandler } from "./middlewares/errorHandler";
