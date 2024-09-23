@@ -39,7 +39,7 @@ model Product {
   orderItems  OrderProduct[]
   cartItems   CartProduct[]
   reviews     Review[]
-  wishlists   Wishlist[]
+  wishlists   WishlistProduct[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
@@ -134,9 +134,19 @@ model Wishlist {
   id        Int       @id @default(autoincrement())
   userId    Int       @unique
   user      User      @relation(fields: [userId], references: [id])
-  products  Product[]
+  wishedproducts  WishlistProduct[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+model WishlistProduct {
+  id          Int       @id @default(autoincrement())
+  wishlistId  Int       
+  wishlist    Wishlist  @relation(fields: [wishlistId], references: [id])
+  productId   Int
+  product     Product   @relation(fields: [productId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  @@unique([wishlistId, productId])
 }
 
 enum Role {

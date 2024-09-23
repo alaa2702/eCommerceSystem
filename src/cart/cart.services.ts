@@ -12,30 +12,39 @@ export const createCartService = async (id: number) => {
 export const getCartService = async (userId: number) => {
     const cart = await prisma.cart.findUnique({
         where: { userId },
-        include: { products: true },
+        include: { cartItems: true },
     });
     return cart;
     };
 
-export const addNewItemToCartService = async (productId: number, amount: number, cartId: number) => {
-    await prisma.productsCart.create({
+export const addNewItemToCartService = async (productId: number, quantity: number, cartId: number) => {
+    await prisma.cartProduct.create({
       data: {
         cartId,  
         productId,
-        amount,
+        quantity,
+
       },
     });
   
 }
-export const updateItemInCartService = async (productId: number, amount: number) => {
-  await prisma.productsCart.update({
+export const updateStoce = async (productId: number, quantity: number) => {
+    await prisma.product.update({
+      where: { id: productId },
+      data: { stock: quantity },
+    });
+  };
+  
+
+export const updateItemInCartService = async (productId: number, quantity: number) => {
+  await prisma.cartProduct.update({
     where: { id: productId },
-    data: { amount },
+    data: { quantity },
   });
 };
 
 export const deleteItemFromCartService = async (productId: number) => {
-  await prisma.productsCart.delete({
+  await prisma.cartProduct.delete({
     where: { id: productId },
   });
 };

@@ -1,40 +1,56 @@
+import { error } from "console";
 import prisma from "../utils/prisma";
-
+export const getProductByNameService = async (name: string) => {
+    const product = await prisma.product.findFirst({
+        where: {
+            name
+        },
+        select: {
+            id: true
+        }
+    });
+    return product;
+}
 export const getWishlistService = async (userId: number) => {
     const wishlist = await prisma.wishlist.findUnique({
         where: {
             userId
         },
-        include: {
-            products: true,
+        
+    });
+    return wishlist;
+};
+export const createWishlistService = async (userId:number ) => {
+    const wishlist = await prisma.wishlist.create({
+        data: {
+            userId
         }
     });
     return wishlist;
 };
 
-export const createOrAddWishlistService = async (userId:number, products: any) => {
-    const wishlist = await prisma.wishlist.upsert({
-            where: {
-            userId
-        },
-        update: {
-            products: {
-                set: products
+export const addWishlistService = async (wishlistId: number, productId: number) => {
+    const wishlist = await prisma.wishlistProduct.createMany({
+        data: 
+        
+            {
+                    wishlistId,
+                    productId
+            
             }
-        },
-        create: {
-            userId,
-            products
-        }
+
     });
     return wishlist;
 
 }; 
-export const deleteWishlistService = async (userId:number ) => {
-    const wishlist = await prisma.wishlist.delete({
+export const deleteWishlistService = async (wishlistId:number, productId:number ) => {
+    const wishlist = await prisma.wishlistProduct.delete({
         where: {
-            userId
-        },
+            wishlistId_productId : {
+                wishlistId,
+                productId
+            }
+            }
     });
     return wishlist;
     

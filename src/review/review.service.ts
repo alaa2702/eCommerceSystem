@@ -1,10 +1,20 @@
 import prisma from "../utils/prisma";
 
-export const createReviewService = async () => {};
-export const getReviewsService = async (userId:number) => {
+export const createReviewService = async (userId: number, productId: number, rating: number,comment: string) => {
+    const review = await prisma.review.create({
+        data: {
+            userId,
+            productId,
+            rating,
+            comment
+        }
+    });
+    return review;
+};
+export const getReviewService = async (id:number) => {
     const reviews = await prisma.review.findMany({
         where: {
-            userId,
+            id
         },
         select: {
             id: true,
@@ -13,6 +23,28 @@ export const getReviewsService = async (userId:number) => {
             }
         
     });
+    return reviews;
+};export const getReviewsService = async () => {
+    const reviews = await prisma.review.findMany({
+        select: {
+            id: true,
+            rating: true,
+            comment: true,
+            product: {
+                select: {
+                    name: true,
+                }
+            },
+            user: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                }
+            }
+        }
+    });
+        
     return reviews;
 };
 export const getReviewsOfProductService = async (productId: number) => {
