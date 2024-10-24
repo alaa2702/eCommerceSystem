@@ -17,13 +17,13 @@ export const getReviewsOfProductController = async (req: Request, res: Response)
     res.json(reviews);
 }
 export const createReviewController = async (req: Request, res: Response) => {
-    const userId = Number(req.user?.id);
+    const userId = Number((req as any). user.id);
     const {productId, rating, comment} = req.body;
     const review = await createReviewService(userId, productId, rating, comment);
     res.json(review);
 }
 export const deleteReviewController = async (req: Request, res: Response) => {
-    const userId = Number(req.user?.id);
+    const userId = Number((req as any). user.id);
     const {productId} = req.body;
     const review = await deleteReviewService(userId, productId);
     res.json(review);

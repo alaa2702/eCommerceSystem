@@ -9,7 +9,7 @@ export const addToCart = async (req: Request, res: Response, next: NextFunction)
     if (!product) {
         return res.status(404).json({ message: 'Product not found' });
     }
-    const userId = req.user?.id;
+    const userId = (req as any).user?.id;
     if (!userId) {  
         return res.status(401).json({ message: 'User not found' });
     }
@@ -68,7 +68,7 @@ export const removeFromCart = async (req: Request, res: Response, next: NextFunc
 
 // Get the user's cart
 export const getCart = async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user?.id;
+    const userId = (req as any). user.id;
     if (!userId) {
         return res.status(401).json({ message: 'User not found' });
     }

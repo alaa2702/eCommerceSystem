@@ -5,7 +5,7 @@ import { number } from "zod";
 
 
 export const getWishlistcontroller = async (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = (req as any). user.id;
     const wishlist = await getWishlistService(Number(userId));
     if (!wishlist) {
         return res.status(404).json({ message: "There is no wishlist" });
@@ -14,7 +14,7 @@ export const getWishlistcontroller = async (req: Request, res: Response) => {
 
 }; 
 export const addItemWishlistcontroller = async (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = (req as any). user.id;
     const { product } = req.body;
     const productId = await getProductByNameService(product);
     if (!productId) {

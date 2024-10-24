@@ -2,7 +2,7 @@ import { Request,Response } from "express";
 
 import { createOrderService, getOrderService, getOrdersService, updateOrderStatusService, getUserOrdersService, cancelOrderService } from "./order.services";
 export const getOrderController = async (req: Request, res: Response) => {
-    const orderId = Number(req.params.id);
+    const orderId = Number((req as any).params.id);
     const order = await getOrderService(orderId);
     if (!order) {
         return res.status(404).json({ message: 'Order not found' });
@@ -17,9 +17,17 @@ export const getOrdersController = async (req: Request, res: Response) => {
     }
     res.status(200).json(orders);
 };
-export const updateOrderStatusController = async (req: Request, res: Response) => {};
+export const updateOrderStatusController = async (req: Request, res: Response) => {
+    const orderId = Number(req.params.id);
+    const { status } = req.body;
+    const order = await updateOrderStatusService(orderId, status);
+    if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+    }
+    res.status(200).json(order);
+};
 export const getUserOrdersController = async (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = (req as any). user.id;
     if (!userId) {
         return res.status(401).json({ message: 'User is Unauthorizated' });
     }
@@ -30,7 +38,7 @@ export const getUserOrdersController = async (req: Request, res: Response) => {
     res.status(200).json(order);
 };
 export const cancelOrderController = async (req: Request, res: Response) => {
-    const orderId = Number(req.params.id);
+    const orderId = Number((req as any).params.id);
     const order = await cancelOrderService(orderId);
     if (!order) {
         return res.status(404).json({ message: 'Order not found' });
@@ -38,7 +46,7 @@ export const cancelOrderController = async (req: Request, res: Response) => {
     res.status(200).json(order);
 };
 export const createOrderController = async (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = (req as any). user.id;
     if (!userId) {
         return res.status(401).json({ message: 'User is Unauthorizated' });
     }

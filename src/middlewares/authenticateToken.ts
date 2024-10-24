@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { any } from 'zod';
 
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
@@ -11,7 +12,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {id:number ,role: string   }  ;
-    req.user = decoded; // Attach the decoded token payload to the request
+    (req as any). user = decoded; // Attach the decoded token payload to the request
     next();
   } catch (err) {
     return res.status(403).json({ error: 'Invalid token' });

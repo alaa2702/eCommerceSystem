@@ -3,7 +3,7 @@ import { getPaymentService, createPaymentService,checkPaymentService } from "./p
 
 
 export const getPaymentController = async (req: Request, res: Response) => {
-    const userId = req.user?.id;
+    const userId = (req as any). user.id;
     if (!userId) {
         return res.status(401).json({ message: 'User not found' });
     }
@@ -18,7 +18,7 @@ export const getPaymentController = async (req: Request, res: Response) => {
 }
 export const createPaymentController = async (req: Request, res: Response) => {
        const {orderId,paymentMethod, amount, transactionId} = req.body;
-       const userId = req.user?.id;
+       const userId = (req as any). user.id;
         if (!userId) {
               return res.status(401).json({ message: 'User not found' });
         }
